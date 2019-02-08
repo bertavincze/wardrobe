@@ -4,9 +4,14 @@ public class CombinationHanger extends Hanger {
 
     private Clothing upperClothing;
     private Clothing lowerClothing;
+    private int id;
+
+    public CombinationHanger(int id) {
+        super(id);
+    }
 
     @Override
-    protected void addClothing(Clothing clothing) throws ClothingTypeException, HangerFullException, NoSuchSlotException {
+    public void addClothing(Clothing clothing) throws ClothingTypeException, HangerFullException, NoSuchSlotException {
         if (upperClothing == null || lowerClothing == null) {
             if (isClothingAllowed(clothing, "upper")) {
                 upperClothing = clothing;
@@ -21,7 +26,7 @@ public class CombinationHanger extends Hanger {
     }
 
     @Override
-    protected void removeClothing(Clothing clothing) throws NoSuchClothingException {
+    public void removeClothing(Clothing clothing) throws NoSuchClothingException {
         if (clothing.equals(upperClothing)) {
             upperClothing = null;
         } else if (clothing.equals(lowerClothing)) {
@@ -31,12 +36,7 @@ public class CombinationHanger extends Hanger {
         }
     }
 
-    @Override
-    protected boolean isClothingAllowed(Clothing clothing) {
-        return false;
-    }
-
-    protected boolean isClothingAllowed(Clothing clothing, String slot) throws NoSuchSlotException {
+    public boolean isClothingAllowed(Clothing clothing, String slot) throws NoSuchSlotException {
         if (slot.equals("upper")) {
             return clothing.getClothingType().equals(ClothingType.SHIRT) || clothing.getClothingType().equals(ClothingType.BLOUSE);
         } else if (slot.equals("lower")) {
@@ -62,4 +62,5 @@ public class CombinationHanger extends Hanger {
     public Clothing getLowerClothing() {
         return lowerClothing;
     }
+
 }

@@ -7,14 +7,16 @@ public class Wardrobe {
 
     private int size;
     private List<Hanger> hangers;
+    private List<Clothing> clothes; // these are not in the wardrobe yet!
 
     public Wardrobe(int size) {
         this.size = size;
         this.hangers = new ArrayList<>();
+        this.clothes = new ArrayList<>();
     }
 
     public void storeHanger(Hanger hanger) {
-        if (!isFull()) {
+        if (!isFull() && !hangers.contains(hanger)) {
             hangers.add(hanger);
         }
     }
@@ -44,4 +46,20 @@ public class Wardrobe {
         return false;
     }
 
+    public Clothing findClothingById(String id) throws NoSuchClothingException {
+        for (Clothing clothing:clothes) {
+            if (clothing.getId().equals(id)) {
+                return clothing;
+            }
+        }
+        throw new NoSuchClothingException();
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public List<Hanger> getHangers() {
+        return hangers;
+    }
 }

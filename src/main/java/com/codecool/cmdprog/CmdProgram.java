@@ -1,7 +1,6 @@
 package com.codecool.cmdprog;
 
-import com.codecool.api.Hanger;
-import com.codecool.api.Wardrobe;
+import com.codecool.api.*;
 
 import java.util.Scanner;
 
@@ -36,13 +35,37 @@ public class CmdProgram {
             menu.displayMenu();
             switch (sc.nextLine()) {
                 case "1":
-                    // create hanger method
+                    System.out.println("Enter the type of hanger - 'simple' or 'combination': ");
+                    String type = sc.nextLine();
+                    System.out.println("Enter a unique id number for the hanger: ");
+                    int id = Integer.parseInt(sc.nextLine());
+                    try {
+                        Hanger hanger = createHanger(type, id, wardrobe);
+                    } catch (NullPointerException e) {
+                        System.out.println("Invalid type given, please try again.");
+                    } catch (HangerAlreadyExistsException hae) {
+                        System.out.println("This id is already taken, please try again.");
+                    }
                     break;
                 case "2":
+                    // create clothing method
                     break;
                 case "3":
+                    // add clothing to hanger method
                     break;
                 case "4":
+                    System.out.println("Enter the id of the clothing to check: ");
+                    try {
+                        Clothing clothingToFind = wardrobe.findClothingById(sc.nextLine());
+                        if (wardrobe.isSpaceFree(clothingToFind)) {
+                            System.out.println("There is still space.");
+                        } else {
+                            System.out.println("The wardrobe is full!");
+                        }
+                    } catch (NoSuchClothingException e) {
+                        System.out.println("Exception occurred: " + e.getMessage());
+                    }
+
                     break;
                 case "5":
                     break;
@@ -53,6 +76,21 @@ public class CmdProgram {
             }
         }
 
+    }
+
+    private Hanger createHanger(String type, int id, Wardrobe wardrobe) throws NullPointerException, HangerAlreadyExistsException {
+        for (Hanger hanger:wardrobe.getHangers()) {
+            if (hanger.getId() == id) {
+                throw new HangerAlreadyExistsException();
+            }
+        }
+        if (type.equals("simple")) {
+            return new SimpleHanger(id);
+        } else if (type.equals("combination")) {
+            return new CombinationHanger(id);
+        } else {
+            throw new NullPointerException();
+        }
     }
 
 

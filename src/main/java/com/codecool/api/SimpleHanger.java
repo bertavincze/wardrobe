@@ -6,9 +6,14 @@ import java.util.List;
 public class SimpleHanger extends Hanger {
 
     private Clothing clothing;
+    private int id;
+
+    public SimpleHanger(int id) {
+        super(id);
+    }
 
     @Override
-    protected void addClothing(Clothing clothing) throws ClothingTypeException, HangerFullException {
+    public void addClothing(Clothing clothing) throws ClothingTypeException, HangerFullException {
         if (this.clothing == null) {
             if (isClothingAllowed(clothing)) {
                 this.clothing = clothing;
@@ -21,7 +26,7 @@ public class SimpleHanger extends Hanger {
     }
 
     @Override
-    protected void removeClothing(Clothing clothing) throws NoSuchClothingException {
+    public void removeClothing(Clothing clothing) throws NoSuchClothingException {
         if (this.clothing.equals(clothing)) {
             this.clothing = null;
         } else {
@@ -29,8 +34,7 @@ public class SimpleHanger extends Hanger {
         }
     }
 
-    @Override
-    protected boolean isClothingAllowed(Clothing clothing) {
+    public boolean isClothingAllowed(Clothing clothing) {
         return clothing.getClothingType().equals(ClothingType.SHIRT) || clothing.getClothingType().equals(ClothingType.BLOUSE);
     }
 
